@@ -1,9 +1,3 @@
-# reports.py
-# Merged reporting + at-risk functionality
-
-#  - summary_report()         -> prints summary to terminal (default reads "ano.csv")
-#  - export_per_section()     -> writes one CSV per section (into 'reports/' by default)
-#  - export_at_risk()         -> writes at-risk CSV and prints the list (default threshold 75.0)
 
 from typing import List, Dict, Tuple, Optional
 import csv
@@ -29,9 +23,9 @@ HEADER = [
     "midterm","final","attendance_percent"
 ]
 
-# -------------------------
+
 # Helpers
-# -------------------------
+
 def _to_float_safe(val: Optional[str]) -> Optional[float]:
     """Convert string-like to float, return None on empty or invalid."""
     if val is None:
@@ -117,7 +111,7 @@ def summary_report(filename: str = FILENAME, export_sections: bool = True, out_f
     """
     rows = _read_csv_as_dicts(filename)
     if not rows:
-        print("⚠️ File not found or no data:", filename)
+        print("File not found or no data:", filename)
         return
 
     enriched = []
@@ -162,7 +156,7 @@ def summary_report(filename: str = FILENAME, export_sections: bool = True, out_f
         print(f"Highest Grade: {max(grades):.2f}")
         print(f"Lowest Grade: {min(grades):.2f}")
     else:
-        print("\n⚠️ No valid numeric grade data available for statistics.")
+        print("\nNo valid numeric grade data available for statistics.")
 
     # Export per-section CSVs if requested
     if export_sections:
@@ -185,9 +179,9 @@ def summary_report(filename: str = FILENAME, export_sections: bool = True, out_f
                     "final_grade": r.get("final_grade",""),
                     "letter": r.get("letter","")
                 })
-        print(f"\n📁 Saved overall summary to: {summary_csv}")
+        print(f"\nSaved overall summary to: {summary_csv}")
     except Exception as e:
-        print("⚠️ Could not save summary CSV:", e)
+        print("Could not save summary CSV:", e)
 
 
 def export_per_section(rows_or_filename, out_folder: str = OUT_DIR) -> None:
@@ -214,7 +208,7 @@ def export_per_section(rows_or_filename, out_folder: str = OUT_DIR) -> None:
         enriched = list(rows_or_filename)  # assume list of dicts
 
     if not enriched:
-        print("⚠️ No data available to export per-section.")
+        print("No data available to export per-section.")
         return
 
     os.makedirs(out_folder, exist_ok=True)
@@ -243,9 +237,9 @@ def export_per_section(rows_or_filename, out_folder: str = OUT_DIR) -> None:
                     # ensure all fields exist
                     out_row = {k: ("" if r.get(k) is None else r.get(k)) for k in fieldnames}
                     writer.writerow(out_row)
-            print(f"📁 Exported section {sec_name} → {out_path} ({len(items)} students)")
+            print(f"Exported section {sec_name} → {out_path} ({len(items)} students)")
         except Exception as e:
-            print(f"⚠️ Failed to write {out_path}: {e}")
+            print(f"Failed to write {out_path}: {e}")
 
 
 def export_at_risk(filename: str = FILENAME, output_file: str = os.path.join(OUT_DIR, "at_risk_students.csv"), threshold: float = PASSING_GRADE) -> None:
@@ -255,7 +249,7 @@ def export_at_risk(filename: str = FILENAME, output_file: str = os.path.join(OUT
     """
     rows = _read_csv_as_dicts(filename)
     if not rows:
-        print("⚠️ File not found or no data:", filename)
+        print("File not found or no data:", filename)
         return
 
     at_risk: List[Dict[str, str]] = []
@@ -273,7 +267,7 @@ def export_at_risk(filename: str = FILENAME, output_file: str = os.path.join(OUT
             })
 
     if not at_risk:
-        print("✅ No students are currently at risk.")
+        print(" No students are currently at risk.")
         return
 
     # Ensure output dir exists
@@ -286,9 +280,9 @@ def export_at_risk(filename: str = FILENAME, output_file: str = os.path.join(OUT
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
             writer.writerows(at_risk)
-        print(f"\n📁 Saved at-risk list to: {output_file}")
+        print(f"\nSaved at-risk list to: {output_file}")
     except Exception as e:
-        print("⚠️ Failed to write at-risk CSV:", e)
+        print("Failed to write at-risk CSV:", e)
         return
 
     # Print formatted table
@@ -299,7 +293,7 @@ def export_at_risk(filename: str = FILENAME, output_file: str = os.path.join(OUT
         print("{:<12} {:<15} {:<15} {:<10} {:>10}".format(
             s["student_id"], s["last_name"], s["first_name"], s["section"], s["final_grade"]
         ))
-    print(f"\n⚠️ {len(at_risk)} student(s) found below {threshold}.")
+    print(f"\n{len(at_risk)} student(s) found below {threshold}.")
 
 # If run standalone, do a demo summary
 if __name__ == "__main__":
@@ -318,14 +312,14 @@ def display_section_simple(section_name: str, folder: str = OUT_DIR):
     file_path = os.path.join(folder, f"section_{sec_clean}.csv")
 
     if not os.path.exists(file_path):
-        print(f"⚠️ No CSV found for section '{section_name}'. Run summary_report() first to generate per-section files.")
+        print(f"No CSV found for section '{section_name}'. Run summary_report() first to generate per-section files.")
         return
 
     with open(file_path, "r", encoding="utf-8", newline="") as f:
         rows = list(csv.reader(f))
 
     if not rows:
-        print("⚠️ Section CSV exists but is empty.")
+        print("Section CSV exists but is empty.")
         return
 
     header = rows[0]
@@ -346,7 +340,7 @@ def display_section_simple(section_name: str, folder: str = OUT_DIR):
     print("-" * (sum(col_widths) + (3 * (len(col_widths) - 1))))
     for row in data:
         print(fmt(row))
-    print()  # blank line
+    print() 
 
 
 
