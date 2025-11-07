@@ -32,7 +32,7 @@ HEADER = [
 
 
 
-valid_rows, _ = array_operations.clean_ingest("ano.csv", HEADER) # calls the clean_ingest function
+valid_rows, _ = array_operations.clean_ingest("studentRecord.csv", HEADER) # calls the clean_ingest function
 
 
 # ----------------------
@@ -108,11 +108,11 @@ def menu():
                 else:
                     print("Invalid choice. Try again.")
 
-        elif choice == "8":  # ✅ NEW WORKING OPTION
+        elif choice == "8":  
             section = input("Enter section name (e.g., BSIT 1A): ")
             reportz.display_section_simple(section)
 
-        elif choice == "9":  # ✅ EXIT
+        elif choice == "9":  
             print("Exiting program...")
             break
 
