@@ -48,8 +48,8 @@ def menu():
         print("5. Project Student Record by Student ID")
         print("6. Sort Student Data")
         print("7. Analytics and Reports")
-        print("8. Display Section Records")   # ✅ Added
-        print("9. Exit")                      # ✅ Moved exit to option 9
+        print("8. Display Section Records")   
+        print("9. Exit")                      
 
         choice = input("Enter choice: ").strip()
 
@@ -81,7 +81,7 @@ def menu():
                 print("a. Compute Weighted Grades")
                 print("b. Grade Distribution (A–F)")
                 print("c. Percentiles (Top/Bottom 10%)")
-                print("d. Outlier Detection (±2 SD)")
+                print("d. Outliers (±1.5 SD)")
                 print("e. Improvement (Final vs Midterm)")
                 print("f. Summary Report")
                 print("g. At-Risk Students (Export CSV)")
@@ -109,7 +109,7 @@ def menu():
                     print("Invalid choice. Try again.")
 
         elif choice == "8":  
-            section = input("Enter section name (e.g., BSIT 1A): ")
+            section = input("Enter section name (pi,A,AE): ")
             reportz.display_section_simple(section)
 
         elif choice == "9":  
